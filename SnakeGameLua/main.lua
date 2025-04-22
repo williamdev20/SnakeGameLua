@@ -6,6 +6,13 @@ snake = {
 	height = 20
 }
 
+fruit = {
+	randomX = math.random(0, 770),
+	randomY = math.random(0, 580),
+	width = 20,
+	height = 20
+}
+
 function love.load()		
 	love.window.setTitle("Snake Game")
 	fontePadrao = love.graphics.newFont(20)
@@ -18,58 +25,69 @@ function gameOver()
 	isGameOver = true
 end
 
+isColision = false
+
 function love.update(dt)
+
+	-- Verificação pra ficar parado
 	if isGameOver then
 		
 	else
-		if snake.x >= 770 then
+
+		-- Movimentação básica
+		if snake.x >= 780 or snake.x <= 0 or snake.y <= 0 or snake.y >= 580 then
 			gameOver()
-		else 
-			if love.keyboard.isDown("right") then
+
+		elseif love.keyboard.isDown("right") then
 				snake.x = snake.x + snake.speed * dt
-			end
-		end	
-		
-		if snake.x <= 0 then 
-			gameOver()
-		else 
-			if love.keyboard.isDown("left") then
+			
+		elseif love.keyboard.isDown("left") then
 				snake.x = snake.x - snake.speed * dt
-			end
-		end
-
-		if snake.y <= 0 then
-			gameOver()
-		else
-			if love.keyboard.isDown("up") then
+			
+		elseif love.keyboard.isDown("up") then
 				snake.y = snake.y - snake.speed * dt
-			end
-		end
-
-		if snake.y >= 570 then
-			gameOver()
-		else
-			if love.keyboard.isDown("down") then
+		
+		elseif love.keyboard.isDown("down") then
 				snake.y = snake.y + snake.speed * dt
-			end
 		end
 	end
+
+
+	-- Colisão com a fruta
+
+	if snake.x >= fruit.randomX or snake.y >= fruit.randomY then
+		isColision = true
+	end
+
+	if isColision then 
+		fruit.randomX = math.random(0, 780)
+		fruit.randomY = math.random(0, 580)
+		isColision = false
+	end
+
 end
 
 
 function love.draw()
+	-- Snake config
 	love.graphics.setColor(43/255, 172/255, 43/255)
 	love.graphics.rectangle("fill", snake.x, snake.y, snake.width, snake.height)
 	love.graphics.setFont(fontePadrao)
 	love.graphics.print(snake.y)
 	love.graphics.print(snake.x, 0, 20)
 
-	
+
+	-- Fruit config
+	love.graphics.setColor(255/255, 99/255, 71/255)
+	love.graphics.rectangle("fill", fruit.randomX, fruit.randomY, fruit.width, fruit.height)
+
+
+	-- Game over config
 	if isGameOver then
 		love.graphics.setColor(255/255, 99/255, 71/255)
 		love.graphics.setFont(fonte)
 		fontWidth = fonte:getWidth("GAME OVER!")
 		fontHeight = fonte:getHeight()
 		love.graphics.print("GAME OVER!", (love.graphics.getWidth() - fontWidth) / 2, (love.graphics.getHeight() - fontHeight) / 2)
-	end
+	end 
 end
