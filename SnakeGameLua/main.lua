@@ -13,8 +13,8 @@ ranX = math.floor(760 / 20)
 ranY = math.floor(560 / 20)
 
 fruit = {
-  randomX = math.random(0, ranX) * 20,
-  randomY = math.random(0, ranY) * 20,
+  randomX = math.random(2, ranX) * 20,
+  randomY = math.random(2, ranY) * 20,
   width = 20,
   height = 20
 }
@@ -97,8 +97,8 @@ function love.update(dt)
   end
 
   if isColision then
-    fruit.randomX = math.random(0, ranX) * 20
-    fruit.randomY = math.random(0, ranY) * 20
+    fruit.randomX = math.random(2, ranX) * 20
+    fruit.randomY = math.random(2, ranY) * 20
     isColision = false
   end
 end
